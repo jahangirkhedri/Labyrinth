@@ -1,0 +1,102 @@
+version: "3"
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+        - db
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    ports:
+        - "8000:9000"
+    expose:
+        - "9000"
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+        - app
+    networks:
+      - app-network
+
+  #Mariadb Service
+  db:
+    image: mariadb:10.5
+    container_name: db
+    volumes:
+      - "dbdata:/var/lib/mysql"
+      - "./docker/mariadb/my.cnf:/etc/mysql/my.cnf"
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: Labyrinth
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: Labyrinth
+      MYSQL_PASSWORD: 123456
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+      TZ: Asia/Tehran
+    networks:
+      - app-network
+
+  testdb:
+      container_name: testdb
+      image: mariadb:10.5
+      tmpfs: /var/lib/mysql
+      ports:
+          - "3310:3306"
+      environment:
+         MYSQL_ROOT_PASSWORD: root
+         MYSQL_PASSWORD: 123456
+         MYSQL_DATABASE: datak_test
+         MYSQL_USER: datak_test
+      restart: always
+      networks:
+          - app-network
+
+  pma:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    networks:
+      - app-network
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 300M
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local
