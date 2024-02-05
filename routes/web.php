@@ -1,6 +1,5 @@
 <?php
 
-use App\LabyrinthSolver;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,26 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // Example usage
-//    $labyrinth = [
-//        [1, 1, 1, 1, 1,1,1],
-//        [1, 1, 1, 1, 1,1,1],
-//        [1, 1, 1, 1, 1,1,1],
-//        [1, 1, 1, 1, 1,1,1],
-//    ];
-
-    $labyrinth = [
-        [0, 1, 1, 0, 1,1,1],
-        [1, 0, 1, 1, 0,1,1],
-        [1, 1, 1, 1, 1,0,1],
-        [1, 0, 1, 0, 1,1,1],
-    ];
-
-    $start = [1, 0];
-    $exit = [0, 4];
-
-    $solver = new \App\Backtrack($labyrinth,$start,$exit);
-    return $solver->solve();
-
+    return view('welcome');
 });
-

@@ -2,93 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Backtrack;
-use App\Models\Labyrinth;
-use Illuminate\Support\Facades\Auth;
+use App\Services\LabyrinthServiceInterface;
 
 class LabyrinthController extends Controller
 {
+    public function __construct(private LabyrinthServiceInterface $labyrinthService)
+    {
+    }
 
     public function labyrinths()
     {
-        return Auth::user()->labyrinth;
+        return $this->labyrinthService->labyrinths();
     }
 
     public function labyrinth($id)
     {
-        return Labyrinth::findOrFail($id);
+        return $this->labyrinthService->find($id);
     }
 
     public function generateLabyrinth()
     {
-        $Labyrinth = Labyrinth::create([
-            'user_id' => Auth::id(),
-            'labyrinth' => $this->generate()
-        ]);
-        return $Labyrinth;
+        return $this->labyrinthService->generateLabyrinth();
     }
 
     public function playField($labyrinthId,$x,$y,$type)
     {
-        $labyrinth = Labyrinth::findOrFail($labyrinthId);
-        $labyrinthTable = $labyrinth->labyrinth;
-
-        $labyrinthTable[$x][$y] = Labyrinth::TYPES[$type];
-
-        $labyrinth->update([
-            'labyrinth' => $labyrinthTable
-        ]);
-
-        return $labyrinth;
-
-
+        return $this->labyrinthService->playField($labyrinthId,$x,$y,$type);
     }
 
     public function start($labyrinthId,$x,$y)
     {
-        $labyrinth = Labyrinth::findOrFail($labyrinthId);
-
-        $labyrinth->update([
-            'start_x' => $x,
-            'start_y' => $y,
-        ]);
-        return $labyrinth;
-
+        return $this->labyrinthService->start($labyrinthId,$x,$y);
     }
 
     public function end($labyrinthId,$x,$y)
     {
-        $labyrinth = Labyrinth::findOrFail($labyrinthId);
-
-        $labyrinth->update([
-            'end_x' => $x,
-            'end_y' => $y,
-        ]);
-        return $labyrinth;
-
+        return $this->labyrinthService->end($labyrinthId,$x,$y);
     }
 
     public function solution($labyrinthId)
     {
-        $labyrinth = Labyrinth::findOrFail($labyrinthId);
-
-        $backtrack = new Backtrack($labyrinth->labyrinth,[$labyrinth->start_x,$labyrinth->start_y],[$labyrinth->end_x,$labyrinth->end_y]);
-
-        $res = $backtrack->solve();
-        if(count($res))
-            return $res;
-        else
-            return "can't resolve it";
-
+        return $this->labyrinthService->solution($labyrinthId);
     }
 
-    public function generate()
-    {
-        return  [
-            [1, 1, 1, 1, 1,1,1],
-            [1, 1, 1, 1, 1,1,1],
-            [1, 1, 1, 1, 1,1,1],
-            [1, 1, 1, 1, 1,1,1],
-        ];
-    }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\LabyrinthService;
+use App\Services\LabyrinthServiceInterface;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        App::bind(LabyrinthServiceInterface::class,LabyrinthService::class);
     }
 
     /**
