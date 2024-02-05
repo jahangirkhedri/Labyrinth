@@ -18,6 +18,8 @@ echo "run migrations and seeder"
 docker exec app php artisan migrate --seed
 
 docker exec app php artisan optimize:clear
-sudo chown -R www-data:www-data storage/
+docker-compose exec app chown -R www-data:www-data storage/
+docker-compose exec app chmod -R 775 /var/www/bootstrap/cache
+docker-compose exec app chown -R www-data:www-data /var/www/bootstrap/cache
 
 
