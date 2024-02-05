@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "45945fee-ca2d-44b7-8742-3f55bc656e76",
+		"name": "Labyrinth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27658107"
+	},
+	"item": [
+		{
+			"name": "current user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/user"
+			},
+			"response": []
+		},
+		{
+			"name": "labyrinth",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/labyrinth"
+			},
+			"response": []
+		},
+		{
+			"name": "show labyrinth",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/labyrinth/3"
+			},
+			"response": []
+		},
+		{
+			"name": "solve labyrinth",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/labyrinth/3/solution"
+			},
+			"response": []
+		},
+		{
+			"name": "change labyrinth type",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/labyrinth/3/playfield/2/5/filled"
+			},
+			"response": []
+		},
+		{
+			"name": "set start",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/labyrinth/3/start/1/0/"
+			},
+			"response": []
+		},
+		{
+			"name": "set end",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/labyrinth/3/end/0/4/"
+			},
+			"response": []
+		},
+		{
+			"name": "labyrinth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "localhost/api/labyrinth"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"daphne.kirlin@example.net\",\n    \"password\" : \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost/api/login"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "2|xLAQJBfJTMPBooZ8lo7lh62tqhR5AaBnHshkL3Yb0046ebdb"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

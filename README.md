@@ -13,6 +13,7 @@ This bash file build docker, install packages, generate key and run migration an
 
 # Endpoints
 
+there are a postman export for use endpoints on `./Labyrinth.postman_collection.json`
 
 * login
 
