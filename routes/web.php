@@ -34,7 +34,7 @@ Route::get('/', function () {
     $exit = [0, 4];
 
     $solver = new \App\Backtrack($labyrinth,$start,$exit);
-    $solver->solve();
+    return $solver->solve();
 
 });
 

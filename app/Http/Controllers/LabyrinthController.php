@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Backtrack;
 use App\Models\Labyrinth;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,20 +23,24 @@ class LabyrinthController extends Controller
     {
         $Labyrinth = Labyrinth::create([
             'user_id' => Auth::id(),
-            'Labyrinth' => []
+            'labyrinth' => $this->generate()
         ]);
+        return $Labyrinth;
     }
 
-    public function playfield($labyrinthId,$x,$y,$type)
+    public function playField($labyrinthId,$x,$y,$type)
     {
         $labyrinth = Labyrinth::findOrFail($labyrinthId);
         $labyrinthTable = $labyrinth->labyrinth;
 
-        $labyrinthTable[$x][$y] = $type;
+        $labyrinthTable[$x][$y] = Labyrinth::TYPES[$type];
 
         $labyrinth->update([
             'labyrinth' => $labyrinthTable
         ]);
+
+        return $labyrinth;
+
 
     }
 
@@ -47,6 +52,7 @@ class LabyrinthController extends Controller
             'start_x' => $x,
             'start_y' => $y,
         ]);
+        return $labyrinth;
 
     }
 
@@ -58,6 +64,7 @@ class LabyrinthController extends Controller
             'end_x' => $x,
             'end_y' => $y,
         ]);
+        return $labyrinth;
 
     }
 
@@ -65,7 +72,23 @@ class LabyrinthController extends Controller
     {
         $labyrinth = Labyrinth::findOrFail($labyrinthId);
 
-        //do solution
+        $backtrack = new Backtrack($labyrinth->labyrinth,[$labyrinth->start_x,$labyrinth->start_y],[$labyrinth->end_x,$labyrinth->end_y]);
 
+        $res = $backtrack->solve();
+        if(count($res))
+            return $res;
+        else
+            return "can't resolve it";
+
+    }
+
+    public function generate()
+    {
+        return  [
+            [1, 1, 1, 1, 1,1,1],
+            [1, 1, 1, 1, 1,1,1],
+            [1, 1, 1, 1, 1,1,1],
+            [1, 1, 1, 1, 1,1,1],
+        ];
     }
 }

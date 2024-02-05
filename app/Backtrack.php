@@ -5,7 +5,7 @@ namespace App;
 class Backtrack
 {
 
-    public array $maze;
+    public array $board;
     public array $start;
     public array $end;
     public $stack;
@@ -16,9 +16,20 @@ class Backtrack
 
     const  DIRECTION = [[0,1],[1,0],[0,-1],[-1,0]];
 
-    public function __construct($maze,$start,$end)
+    const PATH_TYPE = [
+        "vertical" => [
+            1 => "down",
+            -1 => "up"
+        ],
+        "horizontal" => [
+            1 => "right",
+            -1 => "left"
+        ]
+    ];
+
+    public function __construct($board,$start,$end)
     {
-        $this->maze = $maze;
+        $this->board = $board;
         $this->start = $start;
         $this->end = $end;
         $this->stack = new Stack();
@@ -32,27 +43,53 @@ class Backtrack
             if($neighbor[0] == $this->end[0] && $neighbor[1] == $this->end[1]){
                 $this->stack->push($this->start);
                 $this->stack->push($neighbor);
-               while (!$this->stack->isEmpty()){
-                   dump($this->stack->pop());
-               }
-               dd("the end");
+
+               return $this->getPath();
+
             }else{
-                //todo set start as read
-                $this->maze[$this->start[0]][$this->start[1]] = self::MOVED;
+                $this->board[$this->start[0]][$this->start[1]] = self::MOVED;
                 $this->stack->push($this->start);
                 $this->start = $neighbor;
-                $this->solve();
+               return $this->solve();
             }
         }else{
             if($this->stack->isEmpty()){
-                // can't solve
-                dd("can't solve");
+               return [];
             }else{
-                $this->maze[$this->start[0]][$this->start[1]] = self::MOVED;
+                $this->board[$this->start[0]][$this->start[1]] = self::MOVED;
                 $this->start = $this->stack->pop();
-                $this->solve();
+              return  $this->solve();
             }
         }
+    }
+
+
+    public function getPath()
+    {
+        $path = [];
+        if($this->stack->isEmpty())
+            return [];
+
+        $reverseStack = new Stack();
+        while (!$this->stack->isEmpty()){
+            $reverseStack->push($this->stack->pop());
+        }
+        $start = $reverseStack->pop();
+
+        $last = $start;
+
+        while (!$reverseStack->isEmpty()){
+            $pick = $reverseStack->pop();
+            $diff = $pick[0] - $last[0];
+            if($diff !== 0){
+                $path[]= self::PATH_TYPE["vertical"][$diff];
+            }else{
+                $diff = $pick[1] - $last[1];
+                $path[]= self::PATH_TYPE["horizontal"][$diff];
+            }
+            $last = $pick;
+        }
+        return $path;
     }
 
     public function checkReadyNeighbor()
@@ -63,10 +100,10 @@ class Backtrack
         foreach ($direction as $neighbor){
             $nx = $this->start[0] + $neighbor[0];
             $ny = $this->start[1] + $neighbor[1];
-            if(!isset($this->maze[$nx][$ny]))
+            if(!isset($this->board[$nx][$ny]))
                 continue;
 
-            if ($this->maze[$nx][$ny] === 1){
+            if ($this->board[$nx][$ny] === 1){
                 $hasReadyNeighbor = true;
                 break;
             }
