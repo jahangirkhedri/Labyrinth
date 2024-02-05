@@ -5,6 +5,10 @@ We have a labyrinth like this image which is a two-dimensional.
 
 we want to solve this Labyrinth
 
+I use Backtrack algoritm for find the correct path. 
+You can see Backtrack algoritm in this path:
+`./App/Algoritm/Backtrack.php`
+
 ## install
 
 run `./install.sh`
