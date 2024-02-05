@@ -3,7 +3,7 @@
 We have a labyrinth like this image which is a two-dimensional.
 ![example](./public/example.png)
 
-we want to solve this Labyrinth
+We want to solve this Labyrinth
 
 I use Backtrack algoritm for find the correct path. 
 You can see Backtrack algoritm in this path:
@@ -11,13 +11,13 @@ You can see Backtrack algoritm in this path:
 
 ## install
 
-run `./install.sh`
+Run `./install.sh`
 
 This bash file build docker, install packages, generate key and run migration and seeders
 
 # Endpoints
 
-there are a postman export for use endpoints on `./Labyrinth.postman_collection.json`
+There is a postman export for use endpoints on `./Labyrinth.postman_collection.json`
 
 * login
 
